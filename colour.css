@@ -1,0 +1,21 @@
+.colour-wrapper {
+   background-color: #efefef;
+   padding: 2vw;
+   width: 20vw;
+   border-radius: 2vw;
+}
+
+.colour {
+height: 10vw;
+width: 10vw;
+background-color: rgb(255 105 180);
+}
+
+.inline {
+    display: flex;
+    align-items: baseline;
+}
+
+.inline p {
+    margin-left: 10px;
+}
