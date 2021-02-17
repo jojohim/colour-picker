@@ -1,27 +1,28 @@
 "use strict";
 
-//access the current value of the colour picker 
+//GETTING SELECTED COLOUR FROM USER
 window.addEventListener("DOMContentLoaded", getValue);
 
-//Call add colour via eventlistener
+//SHOWING SELECTED COLOUR
 function getValue() {
     document.getElementById("colour-picker").addEventListener("input", addColour);
   }
 
-//add current colour to box and call conversions
+//SHOW COLOUR AS COLOURED BOX, FUNCTION HANDLER
 function addColour(event) {
     let colouredBoxValue = document.querySelector(".colour").style.backgroundColor = event.target.value;
-    console.log(`HEX: ${colouredBoxValue}`);
+    //console.log(`HEX: ${colouredBoxValue}`);
     displayHex(colouredBoxValue);
     hexToRGB(colouredBoxValue);
+
 }
 
-//display hex
+//SHOWING COLOUR AS HEX
 function displayHex(colouredBoxValue){
     document.querySelector("#HEX p").innerHTML = colouredBoxValue;
 }
 
-//RGB conversion and display
+//CONVERTING HEX TO RGB 
 function hexToRGB(colouredBoxValue) {
     const rString = colouredBoxValue.substring(1, 3);
     const gString = colouredBoxValue.substring(3, 5);
@@ -33,13 +34,27 @@ function hexToRGB(colouredBoxValue) {
     console.log(`RGB: ${r}${g}${b}`)
     displayRGB(r, g, b);
     rgbToHSL(r, g, b);
+    rgbToCSS(r, g, b);
+
 }
 
+//CONVERTING RGB TO CSS STRING 
+function rgbToCSS(r, g, b) {
+let cssText = `rgb(${r}, ${g}, ${b})`;
+displayCSS(cssText);
+}
+
+//SHOWING THE COLOR AS CSS STRING
+function displayCSS(cssText) {
+  document.querySelector("#CSS p").innerHTML = cssText;
+}
+
+//SHOWING THE COLOR AS RGB
 function displayRGB(r, g, b) {
     document.querySelector("#RGB p").innerHTML = `${r} ${g} ${b}`;
   }
 
-//HSL conversion and display
+//CONVERTING RGB TO HSL
   function rgbToHSL(r, g, b){
     r /= 255;
     g /= 255;
@@ -73,7 +88,6 @@ function displayRGB(r, g, b) {
     } else {
       s = (max - l) / ( Math.min(l,1-l));
     }
-    // multiply s and l by 100 to get the value in percent, rather than [0,1]
     s *= 100;
     l *= 100;
   
@@ -82,6 +96,7 @@ function displayRGB(r, g, b) {
 
   }
 
+//SHOWING THE COLOR AS HSL 
   function displayHSL(h,s,l) {
       document.querySelector("#HSL p").innerHTML = `${h.toFixed(0)}, ${s.toFixed(0)}, ${l.toFixed(0)}`;
   }
