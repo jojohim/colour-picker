@@ -5,77 +5,91 @@ window.addEventListener("DOMContentLoaded", getValue);
 
 //SHOWING SELECTED COLOUR
 function getValue() {
-    document.getElementById("colour-picker").addEventListener("input", addColour);
+    document.getElementById("colour-picker").addEventListener("input", function (event) {
+      let hexValue = addColour(event); //hexValue = hex
+      displayHex(hexValue);
+
+      let rgbValue = hexToRGB(hexValue); //rgbValue = rgb
+      displayRGB(rgbValue);
+
+      let cssValue = rgbToCSS(rgbValue); //cssValue = css
+      displayCSS(cssValue);
+
+      let hslValue = rgbToHSL(rgbValue); // hslValue = hsl
+      displayHSL(hslValue);
+    });
   }
 
-//SHOW COLOUR AS COLOURED BOX, FUNCTION HANDLER
+//SHOW COLOUR AS COLOURED BOX
 function addColour(event) {
-    let colouredBoxValue = document.querySelector(".colour").style.backgroundColor = event.target.value;
-    //console.log(`HEX: ${colouredBoxValue}`);
-    displayHex(colouredBoxValue);
-    hexToRGB(colouredBoxValue);
+    document.querySelector(".colour").style.backgroundColor = event.target.value;
+    let hex = event.target.value;
+    console.log(hex);
+    return hex;
 
 }
 
 //SHOWING COLOUR AS HEX
-function displayHex(colouredBoxValue){
-    document.querySelector("#HEX p").innerHTML = colouredBoxValue;
+function displayHex(hexValue){
+    document.querySelector("#HEX p").innerHTML = hexValue;
 }
 
 //CONVERTING HEX TO RGB 
-function hexToRGB(colouredBoxValue) {
-    const rString = colouredBoxValue.substring(1, 3);
-    const gString = colouredBoxValue.substring(3, 5);
-    const bString = colouredBoxValue.substring(5, 7);
+function hexToRGB(hexValue) {
+    const rString = hexValue.substring(1, 3);
+    const gString = hexValue.substring(3, 5);
+    const bString = hexValue.substring(5, 7);
   
     const r = parseInt(rString, 16);
     const g = parseInt(gString, 16);
     const b = parseInt(bString, 16);
-    console.log(`RGB: ${r}${g}${b}`)
-    displayRGB(r, g, b);
-    rgbToHSL(r, g, b);
-    rgbToCSS(r, g, b);
 
+    let rgb = {
+      r,
+      g,
+      b,
+    }
+    return rgb;
 }
 
 //CONVERTING RGB TO CSS STRING 
-function rgbToCSS(r, g, b) {
-let cssText = `rgb(${r}, ${g}, ${b})`;
-displayCSS(cssText);
+function rgbToCSS(rgbValue) {
+let css = `rgb(${rgbValue.r}, ${rgbValue.g}, ${rgbValue.b})`;
+return css;
 }
 
 //SHOWING THE COLOR AS CSS STRING
-function displayCSS(cssText) {
-  document.querySelector("#CSS p").innerHTML = cssText;
+function displayCSS(cssValue) {
+  document.querySelector("#CSS p").innerHTML = cssValue;
 }
 
 //SHOWING THE COLOR AS RGB
-function displayRGB(r, g, b) {
-    document.querySelector("#RGB p").innerHTML = `${r} ${g} ${b}`;
+function displayRGB(rgbValue) {
+    document.querySelector("#RGB p").innerHTML = `${rgbValue.r} ${rgbValue.g} ${rgbValue.b}`;
   }
 
 //CONVERTING RGB TO HSL
-  function rgbToHSL(r, g, b){
-    r /= 255;
-    g /= 255;
-    b /= 255;
+  function rgbToHSL(rgbValue){
+    rgbValue.r /= 255;
+    rgbValue.g /= 255;
+    rgbValue.b /= 255;
   
     let h, s, l;
   
-    const min = Math.min(r, g, b);
-    const max = Math.max(r, g, b);
+    const min = Math.min(rgbValue.r, rgbValue.g, rgbValue.b);
+    const max = Math.max(rgbValue.r, rgbValue.g, rgbValue.b);
    
     if( max === min ) {
       h = 0;
     } else
-    if (max === r) {
-      h = 60 * (0 + (g - b) / (max - min) );
+    if (max === rgbValue.r) {
+      h = 60 * (0 + (rgbValue.g - rgbValue.b) / (max - min) );
     } else
-    if (max === g) {
-      h = 60 * (2 + (b - r) / (max - min) );
+    if (max === rgbValue.g) {
+      h = 60 * (2 + (rgbValue.b - rgbValue.r) / (max - min) );
     } else
-    if (max === b) {
-      h = 60 * (4 + (r - g) / (max - min) );
+    if (max === rgbValue.b) {
+      h = 60 * (4 + (rgbValue.r - rgbValue.g) / (max - min) );
     }
    
     if (h < 0) 
@@ -90,22 +104,16 @@ function displayRGB(r, g, b) {
     }
     s *= 100;
     l *= 100;
-  
-    displayHSL(h,s,l);
-    console.log(h, s, l); 
+
+    let hsl = `${h.toFixed(0)}, ${s.toFixed(0)}, ${l.toFixed(0)}`;
+
+    return hsl;
 
   }
 
 //SHOWING THE COLOR AS HSL 
-  function displayHSL(h,s,l) {
-      document.querySelector("#HSL p").innerHTML = `${h.toFixed(0)}, ${s.toFixed(0)}, ${l.toFixed(0)}`;
+  function displayHSL(hslValue) {
+      document.querySelector("#HSL p").innerHTML = hslValue;
   }
 
-//1. call functin with eventlistener
-//2. AddEventListener for mouse over colour 
-//3. display hovered colour in colour field 
-//4. functions that collects and displays the following:
-    //- HEX Code 
-    //- RGB Values 
-    //- HSL Values
 
